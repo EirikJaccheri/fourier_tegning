@@ -58,8 +58,9 @@ def make_spin(N, num_terms, ft):
 def ft(x):
     return g(x)
 
-num_terms = 35 #Velg num_terms som oddetall midlertidig
+num_terms = 13 #Velg num_terms som oddetall midlertidig
 draw_num = int((num_terms - 1) / 2)
+
 assert draw_num < num_terms
 N = 500 #antall t-verdier / frames
 four, t, four_terms = make_spin(N, num_terms, ft)
@@ -81,15 +82,16 @@ def animate(i): #i = frame number
     if i > 0:  
         xdata[i-1] = 0
         ydata[i-1] = 0 
+   
     xdata[i] = np.real(four_terms[k, i])
     ydata[i] = np.imag(four_terms[k, i])
     itr = 0
     for j in range(1, draw_num+1):
-        xdata[i + j + itr] = np.real(np.sum(four_terms[(k-j +1):k + j+ 1, i]))
-        ydata[i + j + itr] = np.imag(np.sum(four_terms[(k-j +1):k + j+ 1, i])) 
+        xdata[i + j + itr] = np.real(np.sum(four_terms[(k-j +1):k + j, i]))
+        ydata[i + j + itr] = np.imag(np.sum(four_terms[(k-j +1):k + j, i])) 
 
-        xdata[i + (j + 1) + itr] = np.real(np.sum(four_terms[k -j:k + j+ 1, i]) )
-        ydata[i +  (j + 1) + itr] = np.imag(np.sum(four_terms[k -j:k + j+ 1, i]) )
+        xdata[i + (j + 1) + itr] = np.real(np.sum(four_terms[k -j:k + j, i]) )
+        ydata[i + (j + 1) + itr] = np.imag(np.sum(four_terms[k -j:k + j, i]) )
         itr += 1
 
     xdata[i+draw_num + 2] = np.real(four[i])
@@ -108,13 +110,15 @@ def animate(i): #i = frame number
     
     #center of circles update
     itr = 0
+    circles[0].center = (0, 0)
+
     for j in range(1, draw_num + 1):
-        xc = np.real(np.sum(four_terms[(k-j +1):k + j+ 1, i]))
-        yc = np.imag(np.sum(four_terms[(k-j +1):k + j+ 1, i]))
+        xc = np.real(np.sum(four_terms[(k-j +1):k + j , i]))
+        yc = np.imag(np.sum(four_terms[(k-j +1):k + j , i]))
         circles[j + itr].center = (xc , yc)
 
-        xc2 = np.real(np.sum(four_terms[k -j:k + j+ 1, i]) )
-        yc2 = np.imag(np.sum(four_terms[k -j:k + j+ 1, i]) )
+        xc2 = np.real(np.sum(four_terms[k -j:k + j , i]) )
+        yc2 = np.imag(np.sum(four_terms[k -j:k + j , i]) )
 
         circles[j+1 + itr].center = (xc2,yc2)
         itr += 1
@@ -132,6 +136,7 @@ circles.append(plt.Circle((0, 0), np.absolute((four_terms[k, 0])), fill = False,
 for i in range(1, draw_num+ 1):
     circles.append(plt.Circle((0, 0), np.absolute((four_terms[k + i, 0])), fill = False, color = 'c', lw = 0.5))
     circles.append(plt.Circle((0, 0), np.absolute((four_terms[k - i, 0])), fill = False, color = 'c', lw = 0.5))
+print(circles)
 frames = N
 xdata, ydata = np.zeros(frames + 2*draw_num + 1 ), np.zeros(frames+ 2*draw_num + 1)  #reason for (x,y) = (0,0) always drawn
 xdata_sum, ydata_sum = np.zeros(frames+ draw_num+ 1 ), np.zeros(frames+ draw_num+ 1)
