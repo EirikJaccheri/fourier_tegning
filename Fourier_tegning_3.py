@@ -134,7 +134,7 @@ def make_params(N, num_terms, z_list, interval):
     return num_terms, draw_num, N, t, four_terms, mid, interval
 
 #Change only input parameters here
-num_terms, draw_num, N, t, four_terms, mid, interval = make_params(N = 200, num_terms = 71, z_list=Z_LIST, interval = 20) #N: number of t-points/frames. Animation slows down when N increases.
+num_terms, draw_num, N, t, four_terms, mid, interval = make_params(N = 200, num_terms = 31, z_list=Z_LIST, interval = 20) #N: number of t-points/frames. Animation slows down when N increases.
 #interval: ms between each animation
 
 
